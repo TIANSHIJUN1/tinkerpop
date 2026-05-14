@@ -1,4 +1,4 @@
-name: Run NonDex on TinkerGraphTest
+name: NonDex Flaky Test Demo
 
 on:
   push:
@@ -17,8 +17,9 @@ jobs:
           distribution: 'temurin'
       - name: Build project
         run: mvn clean install -DskipTests -Drat.skip=true -pl tinkergraph-gremlin -am
-      - name: Run NonDex on flaky test
+      - name: Run NonDex on Flaky Test
         run: |
-          mvn edu.illinois:nondex-maven-plugin:2.1.1:nondex \
-            -Dtest=TinkerGraphTest#shouldCheckWithinListsOfIdsForMidTraversalHasId \
+          mvn -pl tinkergraph-gremlin edu.illinois:nondex-maven-plugin:2.1.1:nondex \
+            -Dtest=org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphTest#shouldCheckWithinListsOfIdsForMidTraversalHasId \
+            -Drat.skip=true \
             -DnondexRuns=20
