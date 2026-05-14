@@ -93,6 +93,8 @@ import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeThat;
 import static org.mockito.Mockito.mock;
 
+import org.junit.Assert;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @author Stephen Mallette (http://stephen.genoprime.com)
