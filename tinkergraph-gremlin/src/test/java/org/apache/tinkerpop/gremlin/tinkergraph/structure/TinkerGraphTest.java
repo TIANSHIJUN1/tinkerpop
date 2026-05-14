@@ -698,14 +698,13 @@ public class TinkerGraphTest {
      * Validating that mid-traversal hasId() also unwraps ids in lists in addition to ids in arrays as per TINKERPOP-2863
      */
     @Test
-    public void shouldCheckWithinListsOfIdsForMidTraversalHasId() {
-        final GraphTraversalSource g = TinkerFactory.createModern().traversal();
+   public void shouldCheckWithinListsOfIdsForMidTraversalHasId() {
+      GraphTraversalSource g = TinkerFactory.createModern().traversal();
+      List<Vertex> expectedMidTraversal = g.V(new Object[0]).has("name", "marko").outE(new String[]{"knows"}).inV().hasId(2, new Object[]{4}).toList();
+      Assert.assertEquals(expectedMidTraversal, g.V(new Object[0]).has("name", "marko").outE(new String[]{"knows"}).inV().hasId(new Integer[]{2, 4}, new Object[0]).toList());
+      Assert.assertEquals(expectedMidTraversal, g.V(new Object[0]).has("name", "marko").outE(new String[]{"knows"}).inV().hasId(Arrays.asList(2, 4), new Object[0]).toList());
+   }
 
-        final List<Vertex> expectedMidTraversal = g.V().has("name", "marko").outE("knows").inV().hasId(2, 4).toList();
-
-        assertEquals(expectedMidTraversal, g.V().has("name", "marko").outE("knows").inV().hasId(new Integer[]{2, 4}).toList());
-        assertEquals(expectedMidTraversal, g.V().has("name", "marko").outE("knows").inV().hasId(Arrays.asList(2, 4)).toList());
-    }
 
     @Test
     public void shouldOptionalUsingWithComputer() {
