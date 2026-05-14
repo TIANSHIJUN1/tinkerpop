@@ -1,0 +1,24 @@
+name: Run NonDex on TinkerGraphTest
+
+on:
+  push:
+    branches: [ "fix-flaky" ]
+  workflow_dispatch:
+
+jobs:
+  nondex-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Build project
+        run: mvn clean install -DskipTests -Drat.skip=true -pl tinkergraph-gremlin -am
+      - name: Run NonDex on flaky test
+        run: |
+          mvn edu.illinois:nondex-maven-plugin:2.1.1:nondex \
+            -Dtest=TinkerGraphTest#shouldCheckWithinListsOfIdsForMidTraversalHasId \
+            -DnondexRuns=20
