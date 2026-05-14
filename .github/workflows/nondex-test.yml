@@ -15,9 +15,16 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Build project
+
+      - name: Build project (compile only)
         run: mvn clean install -DskipTests -Drat.skip=true -pl tinkergraph-gremlin -am
-      - name: Run NonDex on Flaky Test
+
+      - name: Run regular Maven test (should pass)
+        run: |
+          mvn test -Dtest=TinkerGraphTest#shouldCheckWithinListsOfIdsForMidTraversalHasId \
+            -pl tinkergraph-gremlin -Drat.skip=true
+
+      - name: Run NonDex on Flaky Test (should fail)
         run: |
           mvn -pl tinkergraph-gremlin edu.illinois:nondex-maven-plugin:2.1.1:nondex \
             -Dtest=org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphTest#shouldCheckWithinListsOfIdsForMidTraversalHasId \
